@@ -1,14 +1,65 @@
-import React from 'react';
+import { dbService } from 'fbase';
+import React, { useState, useEffect }  from 'react';
+import { addDoc, getDocs, collection, onSnapshot } from 'firebase/firestore';
+import Nweet from 'components/Nweet';
 
-const Home = () => {
+const Home = ({ userObj }) => {
+    const [nweet, setNweet] = useState("");
+    const [nweets, setNweets] = useState([]);
+
+    // const getNweets = async () => {
+    //     const dbNweets = await getDocs(collection(dbService, "nweets"));
+    //     // dbNweets.forEach(document => console.log(document.data()));
+    //     dbNweets.forEach((document) => {
+    //         const nweetObject ={
+    //             ...document.data(),
+    //             id: document.id,
+    //         }
+    //         setNweets(prev => [nweetObject, ...prev]);
+    //         // 모든 이전 nweets에 대한 배열을 리턴 (새로 작성한 트윗과 그 이전의 것)
+    //     });
+    // };
+    useEffect(() => {
+        // getNweets();
+            onSnapshot(collection(dbService, "nweets"), (snapshot => {
+            const nweetArray = snapshot.docs.map(doc => ({
+                id: doc.id, 
+                ...doc.data(),
+            }));
+            setNweets(nweetArray);
+        }))
+    }, [])
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+
+        await addDoc(collection(dbService, "nweets"), {
+            text: nweet,
+            createdAt: Date.now(),
+            creatorId: userObj.uid,
+        })
+        setNweet("");
+    };
+    const onChange = (event) => {
+        const {target: {value}} = event;
+        // event 내부에 있는 target 안의 value를 달라고 요청
+        setNweet(value);
+    }
     return (
         <div>
-            <form>
-                <input type="text" placeholder="What's on your mind?" maxLength={120}/>
-                <input type="submit" value="Ntweet"/>
+            <form onSubmit={onSubmit}>
+                <input type="text" value={nweet} onChange={onChange} placeholder="What's on your mind?" maxLength={120}/>
+                <input type="submit" value="Nweet"/>
             </form>
+            <div>
+                {nweets.map((nweet) => 
+                (
+                    <Nweet key={nweet.id} nweetObj={nweet} 
+                        isOwner={nweet.creatorId === userObj.uid} />
+                ))}
+            </div>
         </div>
-    );
+    )
 };
 
 export default Home;
