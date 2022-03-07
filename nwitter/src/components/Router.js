@@ -10,12 +10,12 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
     return (   
         <> 
             {/* * Navigation이 존재하려면 로그인 상태 */}
-            { isLoggedIn && <Navigation />}
+            { isLoggedIn && <Navigation userObj={userObj} />}
             <Routes>
                 <Route>
                     {isLoggedIn ? 
                     <>  
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile" element={<Profile userObj={userObj} />} />
                         <Route path="/" element={<Home userObj={userObj} />} />
                         <Route path="/" element={<Navigate replace to="/"/>} />
                     </>

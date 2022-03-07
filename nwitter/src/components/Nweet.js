@@ -1,11 +1,13 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useState } from "react";
 import { deleteDoc, updateDoc, doc } from 'firebase/firestore';
+import { deleteObject, ref } from "firebase/storage";
 
 const Nweet = ({ nweetObj, isOwner }) => {
     const [editing, setEditing] = useState(false); // 수정 모드인지 아닌지
     const [newNweet, setNewNweet] = useState(nweetObj.text); // input에 입력된 텍스트 업데이트
     const NweetTextRef = doc(dbService, `nweets/${nweetObj.id}`)
+    const NweetImageRef = ref(storageService, nweetObj.attachmentUrl);
     const onDeleteClick = () => {
         const ok = window.confirm("Are you sure you want to delete this nweet?");
         console.log(ok)
@@ -14,6 +16,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
             // delete nweet
             // dbService.doc(`nweets/${nweetObj.id}`).delete();
             deleteDoc(NweetTextRef);
+            deleteObject(NweetImageRef);
         }
     };
 
