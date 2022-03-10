@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import firebase from './fbase';
+import "./styles.css";
 import { BrowserRouter } from 'react-router-dom';
 
 // console.log(fbase);

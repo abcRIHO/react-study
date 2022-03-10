@@ -11,6 +11,16 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
         <> 
             {/* * Navigation이 존재하려면 로그인 상태 */}
             { isLoggedIn && <Navigation userObj={userObj} />}
+            <div
+            style={{
+              maxWidth: 890,
+              width: "100%",
+              margin: "0 auto",
+              marginTop: 80,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Routes>
                 <Route>
                     {isLoggedIn ? 
@@ -26,6 +36,7 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
                     </>} 
                 </Route>
             </Routes>
+            </div>
         </>
     )
 }
