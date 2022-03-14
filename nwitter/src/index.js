@@ -4,16 +4,16 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import firebase from './fbase';
 import "./styles.css";
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 // console.log(fbase);
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter>
     <React.StrictMode>
       <App />
     </React.StrictMode>
-  </ BrowserRouter>,
+  </ HashRouter>,
   document.getElementById('root')
 );
 
